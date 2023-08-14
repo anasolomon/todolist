@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const _ = require("lodash");
 const PORT = process.env.PORT || 3030;
+process.env.NODE_VERSION = '18.17.1';
 
 const app = express();
 //USING EJS TO RENDER PAGES
