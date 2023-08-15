@@ -3,8 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const _ = require("lodash");
-require('dotenv').config();
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 3000;
 
 
 const app = express();
@@ -14,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //FOR LOADING ALL LOCAL FILES FROM ONE PLACE
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:0.0.0.0/todolistDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect('mongodb+srv://admin-ana:test123@cluster0.anmrdwa.mongodb.net/todolistDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 // DECLARING SCHEMA FOR THE Items TABLE
 const itemsSchema = new mongoose.Schema({
