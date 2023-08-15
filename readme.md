@@ -1,5 +1,18 @@
+ - [Connecting Express to MongoDB](#connecting-express-to-mongodb)
+ - [Creating Dynamic Lists](#creating-dynamic-lists)
+   - [Adding to do list items to New Lists](#adding-to-do-list-items-to-new-lists)
+   - [Deleting to do list Items From the New Lists](#deleting-to-do-list-items-from-the-new-lists)
+ - [Deployment](#deployment)
+ - [What I learned](#what-i-learned)
+ - [Screenshots](#screenshots)
+
+
+
+
 ## Connecting Express to MongoDB
 I've create a simple to do list app.  
+Documentation on this page creation before connecting it to a Database can be found [here](https://github.com/anasolomon/EJS).    
+Now I will try to connect it to a Database.  
 It catches user input from a *form* throught the usage of external module **body-parser** and updates the the list using another external module called **EJS**.  
 I'm created a new Schema for the item list 
 ```js
@@ -314,28 +327,16 @@ The only issue with this code left is that if we enter a new list called "Home" 
 ```js
 const checkedItemId = _capitalize(req.body.checkbox);
 ```
+## Deployment
+All that's left to do now is to deploy this website into the web. To do so we need to deploy our database into the MongoDB Atlas (I'm using that one) :
+```js
+'mongodb+srv://admin-ana:test123@cluster0.anmrdwa.mongodb.net/todolistDB'
+```
+This link is given upon creation of a cluster on the MongoDB Atlas website, I will use Render to connect my app.js to this remote database.
+Website should be up and running here :
+https://todolist-qmnr.onrender.com/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## What I learned
+# What I learned
 You can specify for a certain CSS rule to apply only to a html element that has a specific class name like this
 ```css
 form.item {
@@ -453,3 +454,12 @@ $pull: { items: { _id: checkedItemId } }
 <hr>
 
 You can use the `lodash` package's [capitalize()](https://lodash.com/docs/4.17.15#capitalize) function to force a string to have it's first letter capitalized and the following letters lower case no matter what it used to be before.
+
+## Screenshots
+Main Page with default items.
+![](https://media.discordapp.net/attachments/1141016274160328756/1141016331475496990/Screenshot_2023-08-15_at_09-30-57_To_Do_List.png?width=1286&height=676)
+Main Page after I added some items :
+![](https://media.discordapp.net/attachments/1141016274160328756/1141016678088577164/Screenshot_2023-08-15_at_09-32-35_To_Do_List.png?width=1286&height=676)
+You can make new custom lists by adding a list name at end of URL, eg:
+https://todolist-qmnr.onrender.com/Work
+![](https://media.discordapp.net/attachments/1141016274160328756/1141017230281281627/Screenshot_2023-08-15_at_09-34-52_To_Do_List.png?width=1286&height=676)
