@@ -13,14 +13,12 @@
 I've create a simple to do list app.  
 Documentation on this page creation before connecting it to a Database can be found [here](https://github.com/anasolomon/EJS).    
 Now I will try to connect it to a Database.  
-It catches user input from a *form* throught the usage of external module **body-parser** and updates the the list using another external module called **EJS**.  
-I'm created a new Schema for the item list 
+
+We are trying to catch user input from a *form* throught the usage of external module **body-parser** and update the the list using another external module called **EJS**.  
+I'm creating a new Schema for the item list 
 ```js
 const itemsSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required : [true, 'Please enter a string']
-    }
+    name: String
 });
 ```
 I declared the mongoose model and populated it's table :
@@ -33,10 +31,10 @@ const item1 = new Item({
 })
 item1.save();
 ```
-which means i dont need to declare them as a javascript array anymore so I deleted/commented out :
+which means i dont need to declare them as a javascript array anymore so I deleted this piece of old code :
 ```js
-//const items = ["Buy Cat Food", "Cook the Cat Food", "Serve my Cat the Cat Food"];
-// const workItems = [];
+const items = ["Buy Cat Food", "Cook the Cat Food", "Serve my Cat the Cat Food"];
+const workItems = [];
 ```
 I've inserted the default items into the items table : 
 ```js
@@ -49,7 +47,7 @@ Item.insertMany(defaultItems, function(err){
       }
 });
 ```
-To show the documents in my items table I used the find() function and assigned the found value 
+To show the documents in my items table I used the `find()` function and assign the found value to `foundItems` :
 ```js
 app.get("/", function(req, res){ 
 
@@ -64,7 +62,7 @@ app.get("/", function(req, res){
     
 });
 ```
-Updated the for loop of the `newListItems` EJS scriptlet inside of the list.ejs html.  
+Updated the old for loop of the `newListItems` EJS scriptlet inside of the *list.ejs* html.  
 Now it will only display the name of an item from the table we've looped through instead of displaying the id and other data. 
 ```html
 <% for (let i = 0; i < newListItems.length; i++) { %>
@@ -74,7 +72,7 @@ Now it will only display the name of an item from the table we've looped through
             </div>
          <% } %>
 ```
-Decided to transform the for loop into a forEach loop for better code readibility : 
+Transformed the for loop into a forEach loop for better code readibility : 
 ```html
 <% newListItems.forEach(function(item){ %>
             <div class="item">
@@ -83,7 +81,7 @@ Decided to transform the for loop into a forEach loop for better code readibilit
             </div>
          <% }); %>
 ```
-To prevent the table from being populated over and over again by the same items everytime I restart my server or refresh the page I wrote an if statement that checks if the table is empty, if yes then it will insert the default items into the table else it will render/display the list page with it's EJS. I also redirected the user again to the root route so the items can be displayed proprely since you cannot render the `newListItems` twice in the same `app.get()`: 
+To prevent the table from being populated over and over again by the same items everytime I restart my server or refresh the page I wrote an if statement that checks if the table is empty, if yes then it will insert the default items into the table or else it will render/display the list.ejs page : 
 ```js
 app.get("/", function(req, res){ 
 
@@ -103,7 +101,7 @@ app.get("/", function(req, res){
     });
 });
 ```
-To items to add to the list from user input in the form we need to change our old EJS code :
+To add items to the list from user form input we need to change our old EJS code :
 ```js
 app.post("/", function(req, res){
 
