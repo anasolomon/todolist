@@ -17,10 +17,7 @@ It catches user input from a *form* throught the usage of external module **body
 I'm created a new Schema for the item list 
 ```js
 const itemsSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required : [true, 'Please enter a string']
-    }
+    name: String
 });
 ```
 I declared the mongoose model and populated it's table :
