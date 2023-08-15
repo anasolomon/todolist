@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const _ = require("lodash");
+require('dotenv').config();
 const PORT = process.env.PORT || 3030;
 
 
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //FOR LOADING ALL LOCAL FILES FROM ONE PLACE
 app.use(express.static("public"));
 
-mongoose.connect('mongodb://127.0.0.1:27017/todolistDB', { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:0.0.0.0/todolistDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 // DECLARING SCHEMA FOR THE Items TABLE
 const itemsSchema = new mongoose.Schema({
@@ -85,7 +86,7 @@ app.post("/", function (req, res) {
         res.redirect("/");
     } else {
         // FINDS ONE ITEM FROM List TABLE WITH PAGE'S NAME AND STORES IT IN foundList
-        List.foundOne({ name: listName }, function (err, foundList) {
+        List.findOne({ name: listName }, function (err, foundList) {
             if (!err) {
                 // FOUND PAGE NAME DOT (PROPERTY) items (List TABLE) GETS NEW ENTERED LIST ITEM PUSHED IN ARRAY items
                 foundList.items.push(item);
@@ -101,7 +102,7 @@ app.post("/", function (req, res) {
 // app.post THAT PROCESSES LOGIC WHEN A REQUEST TO /delete GETS TRIGGERED FROM A POST HTML FORM - CHECKED ITEM GETS DELETED FROM Item TABLE
 app.post("/delete", function (req, res) {
     // VALUE OF checkbox FROM FROM EJS PROPERTY newListItems._id IN FORM ASSIGNED TO checkedItemId VARIABLE 
-    const checkedItemId = _capitalize(req.body.checkbox);
+    const checkedItemId = req.body.checkbox;
     // VALUE OF HIDDEN INPUT THAT HOLDS THE PAGE'S NAME
     const listName = req.body.listName;
 
@@ -128,7 +129,7 @@ app.post("/delete", function (req, res) {
 // REDIRECTS TO PAGE THAT USER ENTERED AT END OF ROOT ROUTE URL PATH - CHECKS IF ENTERED LIST NAME EXISTS, IF NOT THEN CREATES DOCUMENT FOR THAT LIST WITH DEFAULT ITEMS IN IT - ELSE IT RENDERS THE list.ejs PAGE
 app.get("/:customListName", function (req, res) {
     // STORES THE NAME USER ENTERED FROM req.params.listName TO customListName
-    const customListName = req.params.customListName;
+    const customListName = _.capitalize(req.params.customListName);
 
     // FIND ONE DOCUMENT FROM List TABLE WITH PROPERTY name == customListName
     // PUT INSIDE foundList IF QUERY IS TRUE
